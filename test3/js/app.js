@@ -1,10 +1,10 @@
 var fileForSign
 var isDocumentSignedSuccess = false
 window.addEventListener('message', event => {
-	console.log('event', event)
-	// if (event.data.file) {
-	fileForSign = event.data.file
-	// }
+	// console.log('event', event)
+	if (event.data.file) {
+		fileForSign = event.data.file
+	}
 	console.log('fileForSign:', fileForSign)
 })
 
@@ -32,7 +32,7 @@ function getFile() {
 	for (let i = 0; i < byteCharacters.length; i++) {
 		byteNumbers[i] = byteCharacters.charCodeAt(i)
 	}
-	// const byteArray = new Uint8Array(byteNumbers)
+	const byteArray = new Uint8Array(byteNumbers)
 	const file = new File([byteArray], fileForSign.fileName, { type: ext })
 	const dataTransfer = new DataTransfer()
 	dataTransfer.items.add(file)
