@@ -2,9 +2,9 @@ var fileForSign
 var isDocumentSignedSuccess = false
 window.addEventListener('message', event => {
 	console.log('event', event)
-	if (event.data.file) {
-		fileForSign = event.data.file
-	}
+	// if (event.data.file) {
+	fileForSign = event.data.file
+	// }
 	console.log('fileForSign:', fileForSign)
 })
 
