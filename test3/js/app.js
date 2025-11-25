@@ -52,7 +52,7 @@ function getFile() {
 
 	// Імітуємо FileList вручну, якщо треба передати далі
 	// const dataTransfer = new DataTransfer()
-	dataTransfer.items.add(file)
+	// dataTransfer.items.add(file)
 	document.getElementById('signFilesInput').files = dataTransfer.files
 	let fl = $('#signFilesInput').prop('files')
 	console.log('file', file)
