@@ -21928,16 +21928,33 @@ function uint8ToBase64(uint8Array) {
 							this.SetStatus(n, !0)
 					}),
 					(e.prototype.SetResult = function (e, t) {
-						void 0 === e && (e = null),
-							void 0 === t && (t = null),
-							$('#resultContentBlock').empty(),
-							$('#resultContentBlock').append(e),
-							null != t
-								? ($('#resultOKButton').off(),
-								  $('#resultOKButton').on('click', t.handle),
-								  $('#resultOKButton').text(t.title),
-								  $('#resultButtonsBlock').show())
-								: $('#resultButtonsBlock').hide()
+						void 0 === e && (e = null)
+						void 0 === t && (t = null)
+						$('#resultContentBlock').empty()
+
+						if (e) {
+							if (typeof e === 'string') {
+								const cleanedHtml = e.replace(/\[object Object\]/g, '')
+								$('#resultContentBlock').append(cleanedHtml)
+							} else {
+								const $root = $(e).clone(true, true)
+								$root
+									.find('div')
+									.filter(function () {
+										return $(this).text().trim() === '[object Object]'
+									})
+									.remove()
+								$('#resultContentBlock').append($root)
+							}
+						}
+						if (null != t) {
+							$('#resultOKButton').off()
+							$('#resultOKButton').on('click', t.handle)
+							$('#resultOKButton').text(t.title)
+							$('#resultButtonsBlock').show()
+						} else {
+							$('#resultButtonsBlock').hide()
+						}
 					}),
 					(e.prototype.GetURLParameter = function (e, t, n) {
 						if (!e) return n
@@ -23709,12 +23726,12 @@ function uint8ToBase64(uint8Array) {
 								),
 								r = e.signFile.name,
 								i = m.formatFileSize(e.signFile.size),
-								o = this.makeFileDownloadHTML(
-									'saveSignFileButton',
-									p('Файл з підписом'),
-									r,
-									i
-								),
+								// o = this.makeFileDownloadHTML(
+								// 	'saveSignFileButton',
+								// 	p('Файл з підписом'),
+								// 	r,
+								// 	i
+								// ),
 								s = [],
 								a = 0;
 							a < e.files.length;
@@ -23729,12 +23746,12 @@ function uint8ToBase64(uint8Array) {
 									? e.files[0].name
 									: this.removeFileExtension(e.signFile.name) + '.zip',
 							l = m.formatFileSize(this.GetFilesSize(e.files)),
-							c = this.makeFileDownloadHTML(
-								'saveDataFileButton',
-								p('Файл(и) без підпису'),
-								u,
-								l
-							),
+							// c = this.makeFileDownloadHTML(
+							// 	'saveDataFileButton',
+							// 	p('Файл(и) без підпису'),
+							// 	u,
+							// 	l
+							// ),
 							_ = this.removeFileExtension(u) + '_Validation_Report.pdf',
 							f = this.makeFileDownloadHTML(
 								'saveReportFileButton',
@@ -23844,8 +23861,8 @@ function uint8ToBase64(uint8Array) {
 									noTSPWarning: T,
 									advancedWarning: A,
 								},
-								saveDataFileButton: c,
-								saveSignFileButton: o,
+								// saveDataFileButton: c,
+								// saveSignFileButton: o,
 								saveReportFileButton: f,
 								libraryVersion: LIBRARY_VERSION,
 							},
