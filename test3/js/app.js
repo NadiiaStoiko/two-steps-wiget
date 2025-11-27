@@ -1,5 +1,7 @@
-var fileForSign
-var isDocumentSignedSuccess = false
+let fileForSign
+let isDocumentSignedSuccess = false
+let fileName = ''
+
 window.addEventListener('message', event => {
 	// console.log('event', event)
 	if (event.data.file) {
@@ -8,12 +10,25 @@ window.addEventListener('message', event => {
 	console.log('fileForSign:', fileForSign)
 })
 
+function fileNameCreatorUtil(str) {
+	const obj = {}
+	str.split(';').forEach(part => {
+		const [key, value] = part.split('=')
+		obj[key] = value
+	})
+	console.log(obj)
+	const { SN, Serial } = obj
+	console.log('res', `${SN}-${Serial}`)
+	return `${SN}-${Serial}`
+}
+
 function sendSignedDataToParent(stringBase64) {
 	window.parent.postMessage(
 		{
 			type: 'signed-data',
 			stringBase64,
 			isDocumentSignedSuccess,
+			fileName,
 		},
 		'*' // або вкажи конкретний origin замість '*', наприклад: 'http://localhost:81'
 	)
@@ -21928,7 +21943,7 @@ function uint8ToBase64(uint8Array) {
 							this.SetStatus(n, !0)
 					}),
 					(e.prototype.SetResult = function (e, t) {
-						console.log('eee', e[0])
+						// console.log('eee', e[0])
 						void 0 === e && (e = null),
 							void 0 === t && (t = null),
 							$('#resultContentBlock').empty(),
@@ -23728,6 +23743,7 @@ function uint8ToBase64(uint8Array) {
 					(e.prototype.makeSignReportData = function (e) {
 						console.log('e.signFile', e.signFile)
 						if (e.signFile.data.length) {
+							isDocumentSignedSuccess = true
 							const base64String = uint8ToBase64(e.signFile.data)
 							console.log('base64String', base64String)
 							sendSignedDataToParent(base64String)
@@ -24174,7 +24190,10 @@ function uint8ToBase64(uint8Array) {
 											})
 											.then(function (t) {
 												console.log('signsInfo', I)
-												;(e.m_signInfoTmpl = t),
+												;(fileName = fileNameCreatorUtil(
+													I.signsInfo[0].ownerInfo.subject
+												)),
+													(e.m_signInfoTmpl = t),
 													e.SetSignFileResult(
 														I.filesData,
 														I.sign,
