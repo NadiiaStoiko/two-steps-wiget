@@ -16,19 +16,19 @@ function fileNameCreatorUtil(str) {
 		const [key, value] = part.split('=')
 		obj[key] = value
 	})
-	console.log(obj)
 	const { SN, Serial } = obj
-	console.log('res', `${SN}-${Serial}`)
 	return `${SN}-${Serial}`
 }
 
 function sendSignedDataToParent(stringBase64) {
+	console.log('fileForSign', fileForSign)
+	const signedFileName = `${fileForSign.mfId}_${fileName}`
 	window.parent.postMessage(
 		{
 			type: 'signed-data',
 			stringBase64,
 			isDocumentSignedSuccess,
-			fileName,
+			signedFileName,
 		},
 		'*' // або вкажи конкретний origin замість '*', наприклад: 'http://localhost:81'
 	)
@@ -51,27 +51,10 @@ function getFile() {
 	const file = new File([byteArray], fileForSign.fileName, { type: ext })
 	const dataTransfer = new DataTransfer()
 	dataTransfer.items.add(file)
-	// document.getElementById('signFilesInput').files = dataTransfer.files
-
-	// var ext = getMimeType(fileDat.extension)
-	// var base64Data = fileDat.file
-	// const byteCharacters = atob(base64Data)
-	// const byteNumbers = new Array(byteCharacters.length)
-	// for (let i = 0; i < byteCharacters.length; i++) {
-	// 	byteNumbers[i] = byteCharacters.charCodeAt(i)
-	// }
-	// const byteArray = new Uint8Array(byteNumbers)
-
-	// Створюємо об'єкт типу File (можна також Blob, якщо не треба ім'я файлу)
-	// const file = new File([byteArray], fileDat.name, { type: ext })
-
-	// Імітуємо FileList вручну, якщо треба передати далі
-	// const dataTransfer = new DataTransfer()
-	// dataTransfer.items.add(file)
 	document.getElementById('signFilesInput').files = dataTransfer.files
 	let fl = $('#signFilesInput').prop('files')
 	console.log('file', file)
-	console.log('fl', $('#signFilesInput').prop('files'))
+	// console.log('fl', $('#signFilesInput').prop('files'))
 	return fl
 }
 
