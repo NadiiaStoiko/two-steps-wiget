@@ -4,13 +4,15 @@ let fileName = ''
 let isItStamp = false
 
 window.addEventListener('message', event => {
-	console.log('event', event.data)
+	console.log('event', event.data.isItStamp)
 	if (event.data.file) {
 		fileForSign = event.data.file
 	}
 	if (event.data.isItStamp) {
-		isItStamp = event.data.isItStamp
+		isItStamp = true
+		console.log('isItStamp55', isItStamp)
 	}
+	console.log('isItStamp', isItStamp)
 	console.log('fileForSign:', fileForSign)
 })
 
