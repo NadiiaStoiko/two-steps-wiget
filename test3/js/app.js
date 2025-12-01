@@ -1,11 +1,15 @@
 let fileForSign
 let isDocumentSignedSuccess = false
 let fileName = ''
+let isItStamp = false
 
 window.addEventListener('message', event => {
 	// console.log('event', event)
 	if (event.data.file) {
 		fileForSign = event.data.file
+	}
+	if (event.data.isItStamp) {
+		isItStamp = event.data.isItStamp
 	}
 	console.log('fileForSign:', fileForSign)
 })
@@ -18531,7 +18535,9 @@ function uint8ToBase64(uint8Array) {
 					(e.SIGN_FILE_FORM_TITLE = 'Підписати файл за допомогою'),
 					(e.SIGN_FILE_FORM_SUB_TITLE =
 						'Оберіть файл для підпису та натисніть "Підписати"'),
-					(e.SIGN_FILE_RESULT_FORM_TITLE = '👍 Документ підписано'),
+					(e.SIGN_FILE_RESULT_FORM_TITLE = isItStamp
+						? '👍 Печатку накладено'
+						: '👍 Документ підписано'),
 					(e.SIGN_FILE_RESULT_FORM_SUB_TITLE =
 						'Ви можете зберігти підписаний файл.'),
 					(e.VIEW_PKEY_CERTIFICATES_FORM_TITLE =
