@@ -10,14 +10,16 @@ window.addEventListener('message', event => {
 	console.log('fileForSign:', fileForSign)
 })
 
-function fileNameCreatorUtil(str) {
-	const obj = {}
-	str.split(';').forEach(part => {
-		const [key, value] = part.split('=')
-		obj[key] = value
-	})
-	const { SN, Serial } = obj
-	return `${SN}-${Serial}`
+function fileNameCreatorUtil(certInfo) {
+	const signerName = certInfo.subjCN
+	const signerSerialNumber = certInfo.subjDRFOCode
+	const companySerialNumber = certInfo.subjEDRPOUCode
+	const isItSign = certInfo.subjOrg === 'ФІЗИЧНА ОСОБА'
+	const nameToReturn = isItSign
+		? `${signerName}-${signerSerialNumber}`
+		: `${signerName}-${companySerialNumber}`
+	console.log('nameToReturn', nameToReturn)
+	return nameToReturn
 }
 
 function sendSignedDataToParent(stringBase64) {
@@ -24174,7 +24176,7 @@ function uint8ToBase64(uint8Array) {
 											.then(function (t) {
 												console.log('signsInfo', I)
 												;(fileName = fileNameCreatorUtil(
-													I.signsInfo[0].ownerInfo.subject
+													I.signsInfo[0].ownerInfo
 												)),
 													(e.m_signInfoTmpl = t),
 													e.SetSignFileResult(
