@@ -10,7 +10,6 @@ window.addEventListener('message', event => {
 	}
 	if (event.data.isItStamp) {
 		isItStamp = true
-		console.log('isItStamp55', isItStamp)
 	}
 	console.log('isItStamp', isItStamp)
 	console.log('fileForSign:', fileForSign)
@@ -21796,6 +21795,9 @@ function uint8ToBase64(uint8Array) {
 									$('#pkBlock').hide()
 								break
 							case '#resultBlock':
+								isItStamp
+									? $('#titleLabel').text('👍 Печатку накладено')
+									: $('#titleLabel').text('👍 Документ підписано')
 								$('#titleLabel').is(':visible')
 									? ($('#titleBlock').show(), $('#subTitleLabel').show())
 									: ($('#titleBlock').hide(), $('#subTitleLabel').hide()),
